@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Gundb Expressjs example</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- this is header -->
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Gundb</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <textarea id="output" cols="30" rows="10"></textarea>
+        <input type="text" id="input" placeholder="name"></input>
+        <button type="button">Click me</button>
+    </div>
+    <script>
+
+        var gun = Gun('http://localhost/gun');
+
+        gun.get('key').get('person').on((data, key) => {
+            var x = 'Before put: ' + data + '\n' + $('#output').val();
+            $('#output').val(x);
+        });
+        $('button').click(() => {
+            var name = $('input').val() || 'No Name';
+            gun.get('key').get('person').put(name);
+            gun.get('key').get('person').on((data, key) => {
+                var x = 'After put: ' + data + '\n' + $('#output').val();
+                $('#output').val(x);
+            });
+        });
+    </script>
+</body>
+
+</html>
